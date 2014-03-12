@@ -13,4 +13,4 @@ The objective of this library is to implement all the functionality described by
 
 The motivation for this library was to provide a PCL compatible replacement for WinInetProxy cache and fix the parts of that library that do not work.
 
-
+The caching logic and the storage mechanism are separated to allow different storage options.  Currently there is only an in-memory store.  A file based store is high on the list of priorities.

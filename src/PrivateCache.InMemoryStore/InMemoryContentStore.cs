@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ClientSamples.CachingTools;
 
-namespace PrivateCache.InMemoryStore
+namespace Tavis.PrivateCache.InMemoryStore
 {
     public class InMemoryContentStore : IContentStore
     {
