@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache", "src\PrivateCache\PrivateCache.csproj", "{5318637C-41C9-43EB-A357-DC40B00E008F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCacheTests", "src\PrivateCacheTests\PrivateCacheTests.csproj", "{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache.InMemoryStore", "src\PrivateCache.InMemoryStore\PrivateCache.InMemoryStore.csproj", "{3ABEE09B-FD07-4CA6-AA27-49000FE89394}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5318637C-41C9-43EB-A357-DC40B00E008F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5318637C-41C9-43EB-A357-DC40B00E008F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5318637C-41C9-43EB-A357-DC40B00E008F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5318637C-41C9-43EB-A357-DC40B00E008F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

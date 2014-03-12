@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClientSamples.CachingTools.PrivateCacheHandler">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CachingTools\PrivateCacheHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_httpCache" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClientSamples.CachingTools.HttpCache">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEQQIAAAAAAAAAAIAAQFAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CachingTools\HttpCache.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_contentStore" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClientSamples.CachingTools.CacheQueryResult">
+    <Position X="5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEAAAAAAAAAAEAAABAAAAAAAAAAAAAQAIAACA=</HashCode>
+      <FileName>CachingTools\CacheQueryResult.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="SelectedVariant" />
+      <Property Name="Status" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClientSamples.CachingTools.CacheContent">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAwAAAgQQAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>CachingTools\CacheContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClientSamples.CachingTools.CacheEntry">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>CachingTools\CacheEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Net.Http.HttpMessageContent" Collapsed="true">
+    <Position X="5.75" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClientSamples.CachingTools.PrimaryCacheKey" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgABAAAAAACAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>CachingTools\PrimaryCacheKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ClientSamples.CachingTools.IContentStore" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AggAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CachingTools\IContentStore.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ClientSamples.CachingTools.CacheStatus">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>CachingTools\CacheQueryResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
