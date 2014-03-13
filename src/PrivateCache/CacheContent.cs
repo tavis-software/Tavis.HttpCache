@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace ClientSamples.CachingTools
+namespace Tavis.PrivateCache
 {
     public class CacheContent
     {

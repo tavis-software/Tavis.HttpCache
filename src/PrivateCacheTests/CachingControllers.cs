@@ -137,6 +137,22 @@ namespace PrivateCacheTests
 
     }
 
+    public class VaryStarController : ApiController
+    {
+        public HttpResponseMessage Get()
+        {
+            HttpContent content = new StringContent("Hello world");
+
+            var response = new HttpResponseMessage();
+            response.Headers.Vary.Add("*");
+            response.Headers.CacheControl = new CacheControlHeaderValue() { MaxAge = new TimeSpan(0, 0, 0, 60) };
+
+            response.Content = content;
+            return response;
+        }
+
+    }
+
 
     public class ResourceWithEtagController : ApiController
     {

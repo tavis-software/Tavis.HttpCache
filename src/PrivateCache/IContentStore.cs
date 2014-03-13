@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Tavis.PrivateCache;
 
 namespace ClientSamples.CachingTools
 {

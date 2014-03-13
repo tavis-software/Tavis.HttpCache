@@ -35,32 +35,38 @@ namespace Tavis.PrivateCache
             
 
             // Do we have a matching variant representation?
-            var selectedVariant =  await _contentStore.GetContentAsync(cacheEntry, cacheEntry.CreateSecondaryKey(request));
-            if (selectedVariant == null)
+
+            var secondaryKey = cacheEntry.CreateSecondaryKey(request);
+            if (secondaryKey == "*")   // Vary: * never matches
+            {
+                return CacheQueryResult.CannotUseCache();
+            }
+            var selectedResponse =  await _contentStore.GetContentAsync(cacheEntry, secondaryKey);
+            if (selectedResponse == null)
             {
                 return CacheQueryResult.CannotUseCache();
             }
             
             // Do caching directives require that we revalidate it regardless of freshness?
             var requestCacheControl = request.Headers.CacheControl ?? new CacheControlHeaderValue();
-            if ((requestCacheControl.NoCache || selectedVariant.CacheControl.NoCache))
+            if ((requestCacheControl.NoCache || selectedResponse.CacheControl.NoCache))
             {
-                return CacheQueryResult.Revalidate(selectedVariant);
+                return CacheQueryResult.Revalidate(selectedResponse);
             }
 
             // Is it fresh?
-            if (selectedVariant.IsFresh())
+            if (selectedResponse.IsFresh())
             {
                 if (requestCacheControl.MinFresh != null)
                 {
-                    if (HttpCache.CalculateAge(selectedVariant.Response) <= requestCacheControl.MinFresh)
+                    if (HttpCache.CalculateAge(selectedResponse.Response) <= requestCacheControl.MinFresh)
                     {
-                        return CacheQueryResult.ReturnStored(selectedVariant);
+                        return CacheQueryResult.ReturnStored(selectedResponse);
                     }
                 }
                 else
                 {
-                    return CacheQueryResult.ReturnStored(selectedVariant);    
+                    return CacheQueryResult.ReturnStored(selectedResponse);    
                 }
                 
             }
@@ -70,21 +76,21 @@ namespace Tavis.PrivateCache
             {
                 if (requestCacheControl.MaxStaleLimit != null)
                 {
-                    if ((DateTime.UtcNow -  selectedVariant.Expires) <= requestCacheControl.MaxStaleLimit)
+                    if ((DateTime.UtcNow -  selectedResponse.Expires) <= requestCacheControl.MaxStaleLimit)
                     {
-                        return CacheQueryResult.ReturnStored(selectedVariant);
+                        return CacheQueryResult.ReturnStored(selectedResponse);
                     }
                 }
                 else
                 {
-                    return CacheQueryResult.ReturnStored(selectedVariant);    
+                    return CacheQueryResult.ReturnStored(selectedResponse);    
                 }
             }
 
             // Do we have a selector to allow us to do a conditional request to revalidate it?
-            if (selectedVariant.HasValidator)  
+            if (selectedResponse.HasValidator)  
             {
-                return CacheQueryResult.Revalidate(selectedVariant);
+                return CacheQueryResult.Revalidate(selectedResponse);
             }
 
             // Can't do anything to help

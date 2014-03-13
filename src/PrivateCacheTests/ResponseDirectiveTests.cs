@@ -274,6 +274,21 @@ namespace PrivateCacheTests
         }
 
 
+        [Fact]
+        public async Task Private_caching_with_vary_star_header()
+        {
+            var client = CreateCachingEnabledClient();
+
+            var response = await client.GetAsync("/VaryStar"); 
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            HttpAssert.FromServer(response);
+
+            var response2 = await client.GetAsync("/VaryStar");
+            Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+            HttpAssert.FromServer(response2);
+
+        }
+
         private HttpClient CreateCachingEnabledClient()
         {
             var httpClientHandler = TestServer.CreateServer();

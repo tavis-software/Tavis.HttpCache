@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Tavis.PrivateCache;
+using ClientSamples.CachingTools;
 
-namespace ClientSamples.CachingTools
+namespace Tavis.PrivateCache
 {
     public class CacheEntry
     {
@@ -22,9 +21,16 @@ namespace ClientSamples.CachingTools
         {
             
             var key = "";
-            foreach (var h in VaryHeaders)
+            foreach (var h in VaryHeaders.OrderBy(v => v))  // Sort the vary headers so that ordering doesn't generate different stored variants
             {
-                key += h + ":" + String.Join(",", request.Headers.GetValues(h));
+                if (h != "*")
+                {
+                    key += h + ":" + String.Join(",", request.Headers.GetValues(h));
+                }
+                else
+                {
+                    key += "*";
+                }
             }
             return key.ToLower();
         }
