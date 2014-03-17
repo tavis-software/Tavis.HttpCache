@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using ClientSamples.CachingTools;
 
 namespace Tavis.PrivateCache
@@ -19,20 +20,31 @@ namespace Tavis.PrivateCache
 
         public string CreateSecondaryKey(HttpRequestMessage request)
         {
-            
-            var key = "";
+            var key = new StringBuilder(); 
             foreach (var h in VaryHeaders.OrderBy(v => v))  // Sort the vary headers so that ordering doesn't generate different stored variants
             {
                 if (h != "*")
                 {
-                    key += h + ":" + String.Join(",", request.Headers.GetValues(h));
+                    key.Append(h).Append(':');
+                    bool addedOne = false;
+                    
+                    foreach (var val in request.Headers.GetValues(h))
+                    {
+                        key.Append(val).Append(',');
+                        addedOne = true;
+                    }
+                    
+                    if (addedOne)
+                    {
+                        key.Length--;  // truncate trailing comma.
+                    }
                 }
                 else
                 {
-                    key += "*";
+                    key.Append('*');
                 }
             }
-            return key.ToLower();
+            return key.ToString().ToLowerInvariant();
         }
 
         public CacheContent CreateContent(HttpResponseMessage response)
