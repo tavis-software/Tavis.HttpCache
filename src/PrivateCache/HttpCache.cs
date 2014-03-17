@@ -36,7 +36,7 @@ namespace Tavis.PrivateCache
 
             // Do we have a matching variant representation?
 
-            var secondaryKey = cacheEntry.CreateSecondaryKey(request);
+            var secondaryKey = cacheEntry.CreateSecondaryKey(request, cacheEntry.VaryHeaders);
             if (secondaryKey == "*")   // Vary: * never matches
             {
                 return CacheQueryResult.CannotUseCache();

@@ -7,6 +7,7 @@ namespace Tavis.PrivateCache.InMemoryStore
 {
     public class InMemoryContentStore : IContentStore
     {
+        private readonly object syncRoot = new object();
         private readonly Dictionary<PrimaryCacheKey, InMemmoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemmoryCacheEntry>();
 
         public async Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
@@ -37,15 +38,21 @@ namespace Tavis.PrivateCache.InMemoryStore
             if (!_responseCache.ContainsKey(entry.Key))
             {
                 inMemoryCacheEntry = new InMemmoryCacheEntry(entry);
-                _responseCache[entry.Key] = inMemoryCacheEntry;
+                lock (syncRoot)
+                {
+                    _responseCache[entry.Key] = inMemoryCacheEntry;
+                }
             }
             else
             {
                 inMemoryCacheEntry = _responseCache[entry.Key];
             }
             
-            inMemoryCacheEntry.Responses[content.Key] = await CloneAsync(content);
-
+            var newContent = await CloneAsync(content);
+            lock (syncRoot)
+            {
+                inMemoryCacheEntry.Responses[content.Key] = newContent;
+            }
         }
 
 
