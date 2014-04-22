@@ -8,7 +8,7 @@ namespace Tavis.PrivateCache.InMemoryStore
     public class InMemoryContentStore : IContentStore
     {
         private readonly object syncRoot = new object();
-        private readonly Dictionary<PrimaryCacheKey, InMemmoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemmoryCacheEntry>();
+        private readonly Dictionary<PrimaryCacheKey, InMemoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemoryCacheEntry>();
 
         public async Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
         {
@@ -33,11 +33,11 @@ namespace Tavis.PrivateCache.InMemoryStore
         {
             CacheEntry entry = content.CacheEntry;
 
-            InMemmoryCacheEntry inMemoryCacheEntry = null;
+            InMemoryCacheEntry inMemoryCacheEntry = null;
 
             if (!_responseCache.ContainsKey(entry.Key))
             {
-                inMemoryCacheEntry = new InMemmoryCacheEntry(entry);
+                inMemoryCacheEntry = new InMemoryCacheEntry(entry);
                 lock (syncRoot)
                 {
                     _responseCache[entry.Key] = inMemoryCacheEntry;
@@ -71,15 +71,14 @@ namespace Tavis.PrivateCache.InMemoryStore
             };
             return newContent;
         }
-
     }
 
-    public class InMemmoryCacheEntry
+    public class InMemoryCacheEntry
     {
         public CacheEntry CacheEntry { get; set; }
         public Dictionary<string,CacheContent> Responses { get; set; }
 
-        public InMemmoryCacheEntry(CacheEntry cacheEntry)
+        public InMemoryCacheEntry(CacheEntry cacheEntry)
         {
             CacheEntry = cacheEntry;
             Responses = new Dictionary<string, CacheContent>();
