@@ -11,6 +11,8 @@ namespace Tavis.PrivateCache
     {
         private readonly IContentStore _contentStore;
 
+        public Func<HttpResponseMessage, bool> StoreBasedOnHeuristics = (r) => false;
+ 
         public Dictionary<HttpMethod, object> CacheableMethods = new Dictionary<HttpMethod, object>
         {
             {HttpMethod.Get, null},
@@ -32,10 +34,7 @@ namespace Tavis.PrivateCache
                 return CacheQueryResult.CannotUseCache();
             }
 
-            
-
             // Do we have a matching variant representation?
-
             var secondaryKey = cacheEntry.CreateSecondaryKey(request); //, cacheEntry.VaryHeaders
             if (secondaryKey == "*")   // Vary: * never matches
             {
@@ -103,9 +102,7 @@ namespace Tavis.PrivateCache
             // Only cache responses from methods that allow their responses to be cached
             if (!CacheableMethods.ContainsKey(response.RequestMessage.Method)) return false;
             
-            // Only allow responses with status classes (5xx, 4xx,etc) that we understand to be cached 
-            if ((int)response.StatusCode > 599 ) return false;
-
+            
             var cacheControlHeaderValue = response.Headers.CacheControl;
 
             // Ensure that storing is not explicitly prohibited
@@ -116,10 +113,21 @@ namespace Tavis.PrivateCache
             // Ensure we have some freshness directives as this cache doesn't do heuristic based caching
 
             if (response.Content != null && response.Content.Headers.Expires != null) return true;
-            if (cacheControlHeaderValue == null) return false;
-            if (cacheControlHeaderValue.MaxAge != null) return true;
-            if (cacheControlHeaderValue.SharedMaxAge != null) return true;
-            
+            if (cacheControlHeaderValue != null)
+            {
+                if (cacheControlHeaderValue.MaxAge != null) return true;
+                if (cacheControlHeaderValue.SharedMaxAge != null) return true;
+            }
+
+            var sc = (int) response.StatusCode;
+            if ( sc == 200 || sc == 203 || sc == 204 || 
+                 sc == 206 || sc == 300 || sc == 301 || 
+                 sc == 404 || sc == 405 || sc == 410 || 
+                 sc == 414 | sc == 501)
+            {
+                return StoreBasedOnHeuristics(response);
+            }
+
 
             return false;
         }
