@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ClientSamples.CachingTools;
@@ -10,13 +11,14 @@ namespace Tavis.PrivateCache.InMemoryStore
         private readonly object syncRoot = new object();
         private readonly Dictionary<PrimaryCacheKey, InMemoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemoryCacheEntry>();
 
-        public async Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
+        public Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
         {
             if (_responseCache.ContainsKey(cacheKey))
             {
-                return _responseCache[cacheKey].CacheEntry;
+                return Task.FromResult(_responseCache[cacheKey].CacheEntry);
             }
-            return null;
+
+            return Task.FromResult(default(CacheEntry));
         }
 
         public async Task<CacheContent> GetContentAsync(CacheEntry cacheEntry, string secondaryKey)
@@ -26,6 +28,7 @@ namespace Tavis.PrivateCache.InMemoryStore
             {
                 return await CloneAsync(inMemoryCacheEntry.Responses[secondaryKey]);
             }
+
             return null;
         }
 
@@ -55,10 +58,17 @@ namespace Tavis.PrivateCache.InMemoryStore
             }
         }
 
-
         private async Task<CacheContent> CloneAsync(CacheContent cacheContent)
         {
-            var newResponse = await new HttpMessageContent(cacheContent.Response).ReadAsHttpResponseMessageAsync();
+            var newResponse = new HttpResponseMessage(cacheContent.Response.StatusCode);
+            var ms = new MemoryStream();
+
+            foreach (var v in newResponse.Headers) newResponse.Headers.TryAddWithoutValidation(v.Key, v.Value);
+            await (await cacheContent.Response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                .CopyToAsync(ms).ConfigureAwait(false);
+
+            newResponse.Content = new StreamContent(ms);
+            foreach (var v in newResponse.Content.Headers) newResponse.Content.Headers.TryAddWithoutValidation(v.Key, v.Value);
 
             var newContent = new CacheContent()
             {
@@ -69,6 +79,7 @@ namespace Tavis.PrivateCache.InMemoryStore
                 CacheControl = cacheContent.CacheControl,
                 Response = newResponse
             };
+
             return newContent;
         }
     }
