@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache", "src\PrivateCache\PrivateCache.csproj", "{5318637C-41C9-43EB-A357-DC40B00E008F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCacheTests", "src\PrivateCacheTests\PrivateCacheTests.csproj", "{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}"

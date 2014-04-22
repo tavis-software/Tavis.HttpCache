@@ -189,6 +189,25 @@ namespace PrivateCacheTests
         }
 
 
+        [Fact]
+        public async Task Private_caching_accept_language_vary_header_and_request_with_no_accept_language()
+        {
+            var client = CreateCachingEnabledClient();
+
+            var linkEnglish = new Link()
+            {
+                Target = new Uri("/VaryingCacheableResource", UriKind.Relative)
+            };
+            linkEnglish.RequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("en"));
+            
+            var response = await client.SendAsync(linkEnglish.CreateRequest());
+            HttpAssert.FromServer(response);
+
+            linkEnglish.RequestHeaders.AcceptLanguage.Clear();
+            var response2 = await client.SendAsync(linkEnglish.CreateRequest());
+
+            HttpAssert.FromServer(response2);
+        }
 
 
         [Fact]
