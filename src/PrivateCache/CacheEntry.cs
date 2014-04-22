@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -28,12 +29,16 @@ namespace Tavis.PrivateCache
                     key.Append(h).Append(':');
                     bool addedOne = false;
                     
-                    foreach (var val in request.Headers.GetValues(h))
+                    IEnumerable<string> values;
+                    if (request.Headers.TryGetValues(h, out values))
                     {
-                        key.Append(val).Append(',');
-                        addedOne = true;
+                        foreach (var val in values)
+                        {
+                            key.Append(val).Append(',');
+                            addedOne = true;
+                        }
                     }
-                    
+
                     if (addedOne)
                     {
                         key.Length--;  // truncate trailing comma.
