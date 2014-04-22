@@ -65,6 +65,7 @@
     <Compile Include="CacheQueryResult.cs" />
     <Compile Include="HttpCache.cs" />
     <Compile Include="IContentStore.cs" />
+    <Compile Include="InMemoryContentStore.cs" />
     <Compile Include="PrimaryCacheKey.cs" />
     <Compile Include="PrivateCacheHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

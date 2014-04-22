@@ -85,10 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PrivateCache.InMemoryStore\PrivateCache.InMemoryStore.csproj">
-      <Project>{3abee09b-fd07-4ca6-aa27-49000fe89394}</Project>
-      <Name>PrivateCache.InMemoryStore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PrivateCache\PrivateCache.csproj">
       <Project>{5318637c-41c9-43eb-a357-dc40b00e008f}</Project>
       <Name>PrivateCache</Name>

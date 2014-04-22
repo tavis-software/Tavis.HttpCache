@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache", "src\Private
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCacheTests", "src\PrivateCacheTests\PrivateCacheTests.csproj", "{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache.InMemoryStore", "src\PrivateCache.InMemoryStore\PrivateCache.InMemoryStore.csproj", "{3ABEE09B-FD07-4CA6-AA27-49000FE89394}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateCache-Net40", "src\PrivateCache\PrivateCache-Net40.csproj", "{54DA742E-963C-4008-9E83-A6787EE270EF}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3ABEE09B-FD07-4CA6-AA27-49000FE89394}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54DA742E-963C-4008-9E83-A6787EE270EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54DA742E-963C-4008-9E83-A6787EE270EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DA742E-963C-4008-9E83-A6787EE270EF}.Release|Any CPU.ActiveCfg = Release|Any CPU

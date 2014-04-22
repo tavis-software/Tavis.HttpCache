@@ -13,12 +13,19 @@ namespace Tavis.PrivateCache.InMemoryStore
 
         public Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
         {
-            if (_responseCache.ContainsKey(cacheKey))
+            // NB: Task.FromResult doesn't exist in MS.BCL.Async
+            TaskCompletionSource<CacheEntry> ret = new TaskCompletionSource<CacheEntry>();
+
+            if (_responseCache.ContainsKey(cacheKey)) 
             {
-                return Task.FromResult(_responseCache[cacheKey].CacheEntry);
+                ret.SetResult(_responseCache[cacheKey].CacheEntry);
+            } 
+            else 
+            {
+                ret.SetResult(null);
             }
 
-            return Task.FromResult(default(CacheEntry));
+            return ret.Task;
         }
 
         public async Task<CacheContent> GetContentAsync(CacheEntry cacheEntry, string secondaryKey)
