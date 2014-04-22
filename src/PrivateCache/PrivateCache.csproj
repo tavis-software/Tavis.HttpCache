@@ -39,7 +39,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +48,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\</OutputPath>
+    <IntermediateOutputPath>obj\Release\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
