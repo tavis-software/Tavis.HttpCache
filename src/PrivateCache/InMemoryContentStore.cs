@@ -72,14 +72,17 @@ namespace Tavis.PrivateCache.InMemoryStore
 
             foreach (var v in cacheContent.Response.Headers) newResponse.Headers.TryAddWithoutValidation(v.Key, v.Value);
 
-            newResponse.Content = new StreamContent(ms);
 
             if (cacheContent.Response.Content != null) 
             {
-                var stream = await cacheContent.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                await stream.CopyToAsync(ms).ConfigureAwait(false);
+                var bytes = await cacheContent.Response.Content.ReadAsByteArrayAsync();
+                newResponse.Content = new ByteArrayContent(bytes);
             
                 foreach (var v in cacheContent.Response.Content.Headers) newResponse.Content.Headers.TryAddWithoutValidation(v.Key, v.Value);
+            } 
+            else 
+            {
+                newResponse.Content = null;
             }
 
             var newContent = new CacheContent()
