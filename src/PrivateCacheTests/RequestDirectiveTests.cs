@@ -1,13 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Tavis.PrivateCache;
-using Tavis.PrivateCache.InMemoryStore;
 using Xunit;
+using Tavis.PrivateCache;
 
 namespace PrivateCacheTests
 {
@@ -25,7 +25,7 @@ namespace PrivateCacheTests
         {
             var client = CreateClientWithMessageHandlerCache();
 
-            var response = await client.GetAsync("/CacheableResource");  // Round trip to server
+            var response = await client.GetAsync("/CacheableResource"); // Round trip to server
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             HttpAssert.FromServer(response);
 
@@ -33,7 +33,7 @@ namespace PrivateCacheTests
             {
                 RequestUri = new Uri("/CacheableResource", UriKind.Relative)
             };
-            request.Headers.CacheControl = new CacheControlHeaderValue() { NoCache = true };
+            request.Headers.CacheControl = new CacheControlHeaderValue() {NoCache = true};
 
             var response2 = await client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
@@ -41,9 +41,7 @@ namespace PrivateCacheTests
         }
 
 
-      
 
-       
         [Fact]
         public async Task Indicate_that_stale_requests_are_ok_with_messagehandler()
         {

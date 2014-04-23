@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tavis;
 using Tavis.PrivateCache;
-using Tavis.PrivateCache.InMemoryStore;
 using Xunit;
 
 namespace PrivateCacheTests
@@ -29,18 +28,27 @@ namespace PrivateCacheTests
 
             var response = await client.GetAsync("/CacheableResource");  // Server round trip
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal("This is cached content", await response.Content.ReadAsStringAsync());
             HttpAssert.FromServer(response);
 
             Thread.Sleep(1000); // Pause to see non-zero age
 
             var response2 = await client.GetAsync("/CacheableResource");  // No round trip
             Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+            Assert.Equal("This is cached content", await response2.Content.ReadAsStringAsync());
             HttpAssert.FromCache(response2);
 
+            var response2a = await client.GetAsync("/CacheableResource");  // No round trip
+            Assert.Equal(HttpStatusCode.OK, response2a.StatusCode);
+            Assert.Equal("This is cached content", await response2a.Content.ReadAsStringAsync());
+            HttpAssert.FromCache(response2);
+
+            
             Thread.Sleep(7000); // Pause for resource to expire
 
             var response3 = await client.GetAsync("/CacheableResource");   // Server round trip
             Assert.Equal(HttpStatusCode.OK, response3.StatusCode);
+            Assert.Equal("This is cached content", await response3.Content.ReadAsStringAsync());
             HttpAssert.FromServer(response3);
         }
 
@@ -232,11 +240,13 @@ namespace PrivateCacheTests
             HttpAssert.FromServer(response);
 
             var responseExplicitEn = await client.SendAsync(linkEnglish.CreateRequest());
-            Assert.Equal("This is cached content", await responseExplicitEn.Content.ReadAsStringAsync());
+            var content = await responseExplicitEn.Content.ReadAsStringAsync();
+            Assert.Equal("This is cached content", content);
             HttpAssert.FromCache(responseExplicitEn);
 
             var responseExplicitEn2 = await client.SendAsync(linkEnglish.CreateRequest());
-            Assert.Equal("This is cached content", await responseExplicitEn2.Content.ReadAsStringAsync());
+            var content2 = await responseExplicitEn2.Content.ReadAsStringAsync();
+            Assert.Equal("This is cached content", content2);
             HttpAssert.FromCache(responseExplicitEn2);
 
             var responseExplicitFr = await client.SendAsync(linkFrench.CreateRequest());

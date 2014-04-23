@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ClientSamples.CachingTools;
 
-namespace Tavis.PrivateCache.InMemoryStore
+namespace Tavis.PrivateCache
 {
     public class InMemoryContentStore : IContentStore
     {
@@ -72,15 +72,15 @@ namespace Tavis.PrivateCache.InMemoryStore
 
             foreach (var v in cacheContent.Response.Headers) newResponse.Headers.TryAddWithoutValidation(v.Key, v.Value);
 
-            newResponse.Content = new StreamContent(ms);
-
-            if (cacheContent.Response.Content != null) 
-            {
-                var stream = await cacheContent.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                await stream.CopyToAsync(ms).ConfigureAwait(false);
             
+            if (cacheContent.Response.Content != null)
+            {
+                await cacheContent.Response.Content.CopyToAsync(ms).ConfigureAwait(false);
+                ms.Position = 0;
+                newResponse.Content = new StreamContent(ms);
                 foreach (var v in cacheContent.Response.Content.Headers) newResponse.Content.Headers.TryAddWithoutValidation(v.Key, v.Value);
             }
+           
 
             var newContent = new CacheContent()
             {
