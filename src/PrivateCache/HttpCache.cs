@@ -123,7 +123,7 @@ namespace Tavis.PrivateCache
             if ( sc == 200 || sc == 203 || sc == 204 || 
                  sc == 206 || sc == 300 || sc == 301 || 
                  sc == 404 || sc == 405 || sc == 410 || 
-                 sc == 414 | sc == 501)
+                 sc == 414 || sc == 501)
             {
                 return StoreBasedOnHeuristics(response);
             }

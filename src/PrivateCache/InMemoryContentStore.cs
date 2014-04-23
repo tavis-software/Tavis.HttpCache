@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ClientSamples.CachingTools;
@@ -8,15 +9,23 @@ namespace Tavis.PrivateCache.InMemoryStore
     public class InMemoryContentStore : IContentStore
     {
         private readonly object syncRoot = new object();
-        private readonly Dictionary<PrimaryCacheKey, InMemmoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemmoryCacheEntry>();
+        private readonly Dictionary<PrimaryCacheKey, InMemoryCacheEntry> _responseCache = new Dictionary<PrimaryCacheKey, InMemoryCacheEntry>();
 
-        public async Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
+        public Task<CacheEntry> GetEntryAsync(PrimaryCacheKey cacheKey)
         {
-            if (_responseCache.ContainsKey(cacheKey))
+            // NB: Task.FromResult doesn't exist in MS.BCL.Async
+            TaskCompletionSource<CacheEntry> ret = new TaskCompletionSource<CacheEntry>();
+
+            if (_responseCache.ContainsKey(cacheKey)) 
             {
-                return _responseCache[cacheKey].CacheEntry;
+                ret.SetResult(_responseCache[cacheKey].CacheEntry);
+            } 
+            else 
+            {
+                ret.SetResult(null);
             }
-            return null;
+
+            return ret.Task;
         }
 
         public async Task<CacheContent> GetContentAsync(CacheEntry cacheEntry, string secondaryKey)
@@ -26,6 +35,7 @@ namespace Tavis.PrivateCache.InMemoryStore
             {
                 return await CloneAsync(inMemoryCacheEntry.Responses[secondaryKey]);
             }
+
             return null;
         }
 
@@ -33,11 +43,11 @@ namespace Tavis.PrivateCache.InMemoryStore
         {
             CacheEntry entry = content.CacheEntry;
 
-            InMemmoryCacheEntry inMemoryCacheEntry = null;
+            InMemoryCacheEntry inMemoryCacheEntry = null;
 
             if (!_responseCache.ContainsKey(entry.Key))
             {
-                inMemoryCacheEntry = new InMemmoryCacheEntry(entry);
+                inMemoryCacheEntry = new InMemoryCacheEntry(entry);
                 lock (syncRoot)
                 {
                     _responseCache[entry.Key] = inMemoryCacheEntry;
@@ -55,10 +65,22 @@ namespace Tavis.PrivateCache.InMemoryStore
             }
         }
 
-
         private async Task<CacheContent> CloneAsync(CacheContent cacheContent)
         {
-            var newResponse = await new HttpMessageContent(cacheContent.Response).ReadAsHttpResponseMessageAsync();
+            var newResponse = new HttpResponseMessage(cacheContent.Response.StatusCode);
+            var ms = new MemoryStream();
+
+            foreach (var v in cacheContent.Response.Headers) newResponse.Headers.TryAddWithoutValidation(v.Key, v.Value);
+
+            newResponse.Content = new StreamContent(ms);
+
+            if (cacheContent.Response.Content != null) 
+            {
+                var stream = await cacheContent.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                await stream.CopyToAsync(ms).ConfigureAwait(false);
+            
+                foreach (var v in cacheContent.Response.Content.Headers) newResponse.Content.Headers.TryAddWithoutValidation(v.Key, v.Value);
+            }
 
             var newContent = new CacheContent()
             {
@@ -69,17 +91,17 @@ namespace Tavis.PrivateCache.InMemoryStore
                 CacheControl = cacheContent.CacheControl,
                 Response = newResponse
             };
+
             return newContent;
         }
-
     }
 
-    public class InMemmoryCacheEntry
+    public class InMemoryCacheEntry
     {
         public CacheEntry CacheEntry { get; set; }
         public Dictionary<string,CacheContent> Responses { get; set; }
 
-        public InMemmoryCacheEntry(CacheEntry cacheEntry)
+        public InMemoryCacheEntry(CacheEntry cacheEntry)
         {
             CacheEntry = cacheEntry;
             Responses = new Dictionary<string, CacheContent>();
