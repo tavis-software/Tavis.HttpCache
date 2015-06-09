@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Tavis.PrivateCache</id>
-    <version>0.5.0</version>
+    <id>Tavis.HttpCache</id>
+    <version>0.9.0</version>
     <authors>Darrel Miller</authors>
     <owners>Darrel Miller</owners>
     <projectUrl>https://github.com/tavis-software/Tavis.PrivateCache</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Implementation of a private HttpCache for use with HttpClient</description>
+    <description>Implementation of a HttpCache based on a DelegatingHandler</description>
     <releaseNotes>Initial commit</releaseNotes>
 
     <dependencies>
@@ -25,6 +25,6 @@
   </metadata>
 
   <files>
-    <file src="src\PrivateCache\bin\Release\**\Tavis*.*" target="lib" />
+    <file src="..\artifacts\httpcache\lib\**\Tavis*.*" target="lib" />
   </files>
 </package>

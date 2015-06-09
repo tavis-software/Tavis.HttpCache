@@ -2,16 +2,15 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using ClientSamples.CachingTools;
 
-namespace Tavis.PrivateCache
+namespace Tavis.HttpCache
 {
-    public class PrivateCacheHandler : DelegatingHandler
+    public class HttpCacheHandler : DelegatingHandler
     {
         private readonly HttpCache _httpCache;
 
 
-        public PrivateCacheHandler(HttpMessageHandler innerHandler, HttpCache httpCache)
+        public HttpCacheHandler(HttpMessageHandler innerHandler, Tavis.HttpCache.HttpCache httpCache)
         {
             _httpCache = httpCache;
             InnerHandler = innerHandler;
@@ -24,28 +23,26 @@ namespace Tavis.PrivateCache
 
             if (queryResult.Status == CacheStatus.ReturnStored)
             {
-                return queryResult.GetHttpResponseMessage(request);
+                return queryResult.SelectedResponse;
             }
 
             if (request.Headers.CacheControl != null && request.Headers.CacheControl.OnlyIfCached)
             {
-                return CreateGatewayTimeoutResponse(request);
+                return CreateGatewayTimeoutResponse(request);  // https://tools.ietf.org/html/rfc7234#section-5.2.1.7
             }
 
             if (queryResult.Status == CacheStatus.Revalidate)
             {
-                queryResult.ApplyConditionalHeaders(request);
+                HttpCache.ApplyConditionalHeaders(queryResult,request);
             }
 
             var response = await base.SendAsync(request, cancellationToken);
 
             if (response.StatusCode == HttpStatusCode.NotModified)
             {
-                
-                await _httpCache.UpdateContentAsync(response, queryResult.SelectedVariant); 
+                await _httpCache.UpdateFreshnessAsync(queryResult, response); 
                 response.Dispose();
-                return queryResult.GetHttpResponseMessage(request);
-                
+                return queryResult.SelectedResponse;
             } 
             
             if (_httpCache.CanStore(response))

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace ClientSamples.CachingTools
+namespace Tavis.HttpCache
 {
-    public class PrimaryCacheKey
+    public class CacheKey
     {
         private readonly Uri _uri;
         private readonly HttpMethod _method;
 
 
-        public PrimaryCacheKey(Uri uri, HttpMethod method)
+        public CacheKey(Uri uri, HttpMethod method)
         {
             _uri = uri;
             _method = method;
@@ -21,7 +21,7 @@ namespace ClientSamples.CachingTools
 
         public override bool Equals(object obj)
         {
-            var key2 = (PrimaryCacheKey) obj; 
+            var key2 = (CacheKey) obj; 
             return key2._uri == _uri && key2._method == _method;
         }
 

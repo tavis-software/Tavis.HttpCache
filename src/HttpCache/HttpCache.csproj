@@ -8,8 +8,8 @@
     <ProjectGuid>{5318637C-41C9-43EB-A357-DC40B00E008F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tavis.PrivateCache</RootNamespace>
-    <AssemblyName>Tavis.PrivateCache</AssemblyName>
+    <RootNamespace>Tavis.HttpCache</RootNamespace>
+    <AssemblyName>Tavis.HttpCache</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -57,17 +57,16 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="app.config" />
-    <None Include="packages.PrivateCache.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacheContent.cs" />
     <Compile Include="CacheEntry.cs" />
     <Compile Include="CacheQueryResult.cs" />
     <Compile Include="HttpCache.cs" />
     <Compile Include="IContentStore.cs" />
     <Compile Include="InMemoryContentStore.cs" />
-    <Compile Include="PrimaryCacheKey.cs" />
-    <Compile Include="PrivateCacheHandler.cs" />
+    <Compile Include="CacheKey.cs" />
+    <Compile Include="HttpCacheHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

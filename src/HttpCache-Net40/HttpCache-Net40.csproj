@@ -55,20 +55,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="app.config" />
-    <None Include="packages.PrivateCache-Net40.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CacheContent.cs" />
-    <Compile Include="CacheEntry.cs" />
-    <Compile Include="CacheQueryResult.cs" />
-    <Compile Include="HttpCache.cs" />
-    <Compile Include="IContentStore.cs" />
-    <Compile Include="InMemoryContentStore.cs" />
-    <Compile Include="PrimaryCacheKey.cs" />
-    <Compile Include="PrivateCacheHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\HttpCache\CacheEntry.cs">
+      <Link>CacheEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\CacheKey.cs">
+      <Link>CacheKey.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\CacheQueryResult.cs">
+      <Link>CacheQueryResult.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\HttpCache.cs">
+      <Link>HttpCache.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\HttpCacheHandler.cs">
+      <Link>HttpCacheHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\IContentStore.cs">
+      <Link>IContentStore.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\InMemoryContentStore.cs">
+      <Link>InMemoryContentStore.cs</Link>
+    </Compile>
+    <Compile Include="..\HttpCache\Properties\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -110,6 +120,12 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\portable-net40+sl5+win8+wp8+wpa81\System.Threading.Tasks.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
