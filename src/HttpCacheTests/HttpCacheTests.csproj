@@ -7,8 +7,8 @@
     <ProjectGuid>{81A0113C-44C8-44F3-B855-9FFAF5E63FC5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PrivateCacheTests</RootNamespace>
-    <AssemblyName>PrivateCacheTests</AssemblyName>
+    <RootNamespace>HttpCacheTests</RootNamespace>
+    <AssemblyName>HttpCacheTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -85,9 +85,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PrivateCache\PrivateCache-Net40.csproj">
-      <Project>{54da742e-963c-4008-9e83-a6787ee270ef}</Project>
-      <Name>PrivateCache-Net40</Name>
+    <ProjectReference Include="..\HttpCache\HttpCache.csproj">
+      <Project>{5318637c-41c9-43eb-a357-dc40b00e008f}</Project>
+      <Name>HttpCache</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

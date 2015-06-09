@@ -1,10 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net.Http;
-using Tavis.PrivateCache;
 
-
-namespace ClientSamples.CachingTools
+namespace Tavis.HttpCache
 {
 
     public enum CacheStatus
@@ -17,7 +14,8 @@ namespace ClientSamples.CachingTools
     public class CacheQueryResult
     {
         public CacheStatus Status { get; set; }
-        public CacheContent SelectedVariant;
+        public CacheEntry SelectedEntry;
+        public HttpResponseMessage SelectedResponse;
 
 
         public static CacheQueryResult CannotUseCache()
@@ -28,39 +26,35 @@ namespace ClientSamples.CachingTools
             };
         }
 
-        public static CacheQueryResult Revalidate(CacheContent cacheContent)
+        public static CacheQueryResult Revalidate(CacheEntry cacheEntry, HttpResponseMessage response)
         {
+            HttpCache.UpdateAgeHeader(response);
             return new CacheQueryResult()
             {
                 Status = CacheStatus.Revalidate,
-                SelectedVariant = cacheContent
+                SelectedEntry = cacheEntry,
+                SelectedResponse = response
             };
         }
 
-        public static CacheQueryResult ReturnStored(CacheContent cacheContent)
+        public static CacheQueryResult ReturnStored(CacheEntry cacheEntry, HttpResponseMessage response)
         {
+            HttpCache.UpdateAgeHeader(response);
             return new CacheQueryResult()
             {
                 Status = CacheStatus.ReturnStored,
-                SelectedVariant = cacheContent
+                SelectedEntry = cacheEntry,
+                SelectedResponse = response
             };
-        }
-
-        internal HttpResponseMessage GetHttpResponseMessage(HttpRequestMessage request)
-        {
-            var response = SelectedVariant.Response;
-            response.RequestMessage = request;
-            HttpCache.UpdateAgeHeader(response);
-            return response;
         }
 
 
         internal void ApplyConditionalHeaders(HttpRequestMessage request)
         {
-            Debug.Assert(SelectedVariant != null);
-            if (SelectedVariant == null || !SelectedVariant.HasValidator) return;
+            Debug.Assert(SelectedEntry != null);
+            if (SelectedEntry == null || !SelectedEntry.HasValidator) return;
 
-            var httpResponseMessage = SelectedVariant.Response;
+            var httpResponseMessage = SelectedResponse;
 
             if (httpResponseMessage.Headers.ETag != null)
             {

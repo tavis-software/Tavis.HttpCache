@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Tavis;
-using Tavis.PrivateCache;
+using Tavis.HttpCache;
 using Xunit;
 
-namespace PrivateCacheTests
+namespace HttpCacheTests
 {
     public class ResponseDirectiveTests
     {
@@ -322,7 +322,7 @@ namespace PrivateCacheTests
         {
             var httpClientHandler = TestServer.CreateServer();
             
-            var clientHandler = new PrivateCacheHandler(httpClientHandler, new HttpCache(new InMemoryContentStore()));
+            var clientHandler = new HttpCacheHandler(httpClientHandler, new HttpCache(new InMemoryContentStore()));
             var client = new HttpClient(clientHandler) { BaseAddress = _BaseAddress };
             return client;
         }

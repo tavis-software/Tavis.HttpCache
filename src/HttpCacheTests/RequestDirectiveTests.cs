@@ -1,15 +1,13 @@
 ﻿using System;
-using System.IO;
 using System.Net;
-using System.Net.Cache;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Tavis.HttpCache;
 using Xunit;
-using Tavis.PrivateCache;
 
-namespace PrivateCacheTests
+namespace HttpCacheTests
 {
     public class RequestDirectiveTests
     {
@@ -209,7 +207,7 @@ namespace PrivateCacheTests
         {
             var httpClientHandler = TestServer.CreateServer();
             
-            var clientHandler = new PrivateCacheHandler(httpClientHandler, new HttpCache(new InMemoryContentStore()));
+            var clientHandler = new HttpCacheHandler(httpClientHandler, new HttpCache(new InMemoryContentStore()));
             var client = new HttpClient(clientHandler) { BaseAddress = _BaseAddress };
             return client;
         }

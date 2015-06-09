@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace PrivateCacheTests
+namespace HttpCacheTests
 {
     public class CacheableResourceController : ApiController
     {
@@ -160,8 +160,10 @@ namespace PrivateCacheTests
         {
             var etag = new EntityTagHeaderValue("\"XYZPQR\"");
 
-            if (Request.Headers.IfNoneMatch != null)
+            if (Request.Headers.IfNoneMatch.Count > 0)
             {
+              //  return new HttpResponseMessage(HttpStatusCode.NotFound);
+
                 if (Request.Headers.IfNoneMatch.Contains(etag))
                 {
                     var notModifiedresponse = new HttpResponseMessage(HttpStatusCode.NotModified);
