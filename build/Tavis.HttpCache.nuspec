@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Tavis.HttpCache</id>
+    <version>0.9.0</version>
+    <authors>Darrel Miller</authors>
+    <owners>Darrel Miller</owners>
+    <projectUrl>https://github.com/tavis-software/Tavis.PrivateCache</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Implementation of a HttpCache based on a DelegatingHandler</description>
+    <releaseNotes>Initial commit</releaseNotes>
+
+    <dependencies>
+      <group targetFramework="portable-net4+sl5+netcore45+wp8">
+        <dependency id="Microsoft.Bcl.Async" version="1.0.168" />
+        <dependency id="Microsoft.Net.Http" version="2.2.18" />
+        <dependency id="Newtonsoft.Json" version="6.0.2" />
+      </group>
+
+      <group targetFramework="portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1">
+        <dependency id="Microsoft.Net.Http" version="2.2.18" />
+        <dependency id="Newtonsoft.Json" version="6.0.2" />
+      </group>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="..\artifacts\httpcache\lib\**\Tavis*.*" target="lib" />
+  </files>
+</package>

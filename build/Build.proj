@@ -1,0 +1,28 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
+  <PropertyGroup>
+    <BaseDir>$(MSBuildProjectDirectory)\..</BaseDir>
+    <Configuration Condition="'$(Configuration)'==''" >Release</Configuration>
+    <ArtifactsDir>$(BaseDir)\artifacts</ArtifactsDir>
+    <BuildDir>$(BaseDir)\build</BuildDir>
+    <PackageDir>$(BuildDir)\Packages</PackageDir>
+  	<Project>HttpCache</Project>
+  	<OutputDir>$(BaseDir)\src\$(Project)\bin\$(Configuration)</OutputDir>
+  	<SolutionDir>$(BaseDir)</SolutionDir>  <!-- Needed or import of nuget targets in csproj file fails-->
+  </PropertyGroup>
+
+
+  <Target Name="default" DependsOnTargets="Compile; Package" />
+
+  <Target Name="Compile">
+	  <MSBuild Projects="$(BaseDir)\src\HttpCache\HttpCache.csproj" 
+           Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);OutputPath=$(ArtifactsDir)\HttpCache\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1"  />
+    <MSBuild Projects="$(BaseDir)\src\HttpCache-Net40\HttpCache-Net40.csproj"
+             Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);OutputPath=$(ArtifactsDir)\HttpCache\lib\portable-net4+sl5+netcore45+wp8\"  />
+  </Target>
+
+  <Target Name="Package">
+
+    <Exec WorkingDirectory="$(BuildDir)"
+          Command="nuget.exe pack $(BuildDir)\Tavis.$(Project).nuspec -OutputDirectory $(ArtifactsDir) " />
+  </Target>
+</Project>
