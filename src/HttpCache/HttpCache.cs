@@ -31,7 +31,7 @@ namespace Tavis.HttpCache
         public async Task<CacheQueryResult> QueryCacheAsync(HttpRequestMessage request)
         {
             // Do we have anything stored for this method and URI?
-            var cacheEntryList = await _contentStore.GetEntriesAsync(new CacheKey(request.RequestUri, request.Method));
+            var cacheEntryList = await _contentStore.GetEntriesAsync(new CacheKey(request.RequestUri, request.Method)).ConfigureAwait(false);
             if (cacheEntryList == null)  // Should I use null or Count() == 0 ?
             {
                 return CacheQueryResult.CannotUseCache();
@@ -46,7 +46,7 @@ namespace Tavis.HttpCache
                 return CacheQueryResult.CannotUseCache();
             }
 
-            var response = await _contentStore.GetResponseAsync(selectedEntry.VariantId);
+            var response = await _contentStore.GetResponseAsync(selectedEntry.VariantId).ConfigureAwait(false);
 
             // Do caching directives require that we revalidate it regardless of freshness?
             var requestCacheControl = request.Headers.CacheControl ?? new CacheControlHeaderValue();
@@ -157,7 +157,7 @@ namespace Tavis.HttpCache
 
             UpdateCacheEntry(notModifiedResponse, selectedEntry);
 
-            await _contentStore.UpdateEntryAsync(selectedEntry, result.SelectedResponse);  //TODO
+            await _contentStore.UpdateEntryAsync(selectedEntry, result.SelectedResponse).ConfigureAwait(false);  //TODO
             
         }
 
@@ -168,7 +168,7 @@ namespace Tavis.HttpCache
 
             CacheEntry selectedEntry = null;
 
-            IEnumerable<CacheEntry> cacheEntries = await _contentStore.GetEntriesAsync(primaryCacheKey);
+            IEnumerable<CacheEntry> cacheEntries = await _contentStore.GetEntriesAsync(primaryCacheKey).ConfigureAwait(false);
             if (cacheEntries != null)
             {
                 selectedEntry = MatchVariant(response.RequestMessage, cacheEntries);
@@ -177,13 +177,13 @@ namespace Tavis.HttpCache
             if (selectedEntry != null)
             {
                 UpdateCacheEntry(response, selectedEntry);
-                await _contentStore.UpdateEntryAsync(selectedEntry, response);
+                await _contentStore.UpdateEntryAsync(selectedEntry, response).ConfigureAwait(false);
             }
             else
             {
                 selectedEntry = new CacheEntry(primaryCacheKey, response);
                 UpdateCacheEntry(response, selectedEntry);
-                await _contentStore.AddEntryAsync(selectedEntry, response);
+                await _contentStore.AddEntryAsync(selectedEntry, response).ConfigureAwait(false);
             }
         }
 

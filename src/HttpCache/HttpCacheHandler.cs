@@ -19,7 +19,7 @@ namespace Tavis.HttpCache
         // Process Request and Response
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var queryResult = await _httpCache.QueryCacheAsync(request);
+            var queryResult = await _httpCache.QueryCacheAsync(request).ConfigureAwait(false);
 
             if (queryResult.Status == CacheStatus.ReturnStored)
             {
@@ -36,19 +36,19 @@ namespace Tavis.HttpCache
                 HttpCache.ApplyConditionalHeaders(queryResult,request);
             }
 
-            var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.NotModified)
             {
-                await _httpCache.UpdateFreshnessAsync(queryResult, response); 
+                await _httpCache.UpdateFreshnessAsync(queryResult, response).ConfigureAwait(false); 
                 response.Dispose();
                 return queryResult.SelectedResponse;
             } 
             
             if (_httpCache.CanStore(response))
             {
-                if (response.Content != null) await response.Content.LoadIntoBufferAsync();
-                await _httpCache.StoreResponseAsync(response);
+                if (response.Content != null) await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+                await _httpCache.StoreResponseAsync(response).ConfigureAwait(false);
             }
 
             return response;
