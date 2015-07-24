@@ -25,7 +25,7 @@ namespace Tavis.HttpCache
 
         public async Task<HttpResponseMessage> GetResponseAsync(Guid variantId)
         {
-            return await CloneResponseAsync(_responseCache[variantId]);
+            return await CloneResponseAsync(_responseCache[variantId]).ConfigureAwait(false);
         }
 
         public async Task AddEntryAsync(CacheEntry entry, HttpResponseMessage response)
