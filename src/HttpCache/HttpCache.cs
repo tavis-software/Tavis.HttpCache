@@ -30,13 +30,15 @@ namespace Tavis.HttpCache
 
         public async Task<CacheQueryResult> QueryCacheAsync(HttpRequestMessage request)
         {
-            // Do we have anything stored for this method and URI?
+            // Do we have anything stored for this method and URI?  Return entries for all variants
             var cacheEntryList = await _contentStore.GetEntriesAsync(new CacheKey(request.RequestUri, request.Method)).ConfigureAwait(false);
             if (cacheEntryList == null)  // Should I use null or Count() == 0 ?
             {
                 return CacheQueryResult.CannotUseCache();
             }
 
+            // Find the first matching variant based on the vary header fields defined in the cacheEntry 
+            // and the values in the request
             var selectedEntry = MatchVariant(request, cacheEntryList);
 
 
@@ -46,6 +48,7 @@ namespace Tavis.HttpCache
                 return CacheQueryResult.CannotUseCache();
             }
 
+            // Get the complete response, including body based on the selected variant
             var response = await _contentStore.GetResponseAsync(selectedEntry.VariantId).ConfigureAwait(false);
 
             // Do caching directives require that we revalidate it regardless of freshness?
@@ -105,7 +108,6 @@ namespace Tavis.HttpCache
         {
             // Only cache responses from methods that allow their responses to be cached
             if (!CacheableMethods.ContainsKey(response.RequestMessage.Method)) return false;
-            
             
             
             // Ensure that storing is not explicitly prohibited

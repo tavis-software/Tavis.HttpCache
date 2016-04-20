@@ -46,7 +46,7 @@ namespace Tavis.HttpCache
         public bool Match(HttpRequestMessage request)
         {
             
-            foreach (var h in Vary)  // Sort the vary headers so that ordering doesn't generate different stored variants
+            foreach (var h in Vary)  
             {
                 if (h != "*")
                 {

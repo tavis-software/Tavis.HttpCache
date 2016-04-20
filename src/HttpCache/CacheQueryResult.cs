@@ -11,6 +11,7 @@ namespace Tavis.HttpCache
         ReturnStored
     }
 
+    
     public class CacheQueryResult
     {
         public CacheStatus Status { get; set; }
