@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachingControllers.cs" />
+    <Compile Include="LruCollectionTest.cs" />
     <Compile Include="RequestDirectiveTests.cs" />
     <Compile Include="ResponseDirectiveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

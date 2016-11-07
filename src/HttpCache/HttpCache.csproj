@@ -67,6 +67,8 @@
     <Compile Include="InMemoryContentStore.cs" />
     <Compile Include="CacheKey.cs" />
     <Compile Include="HttpCacheHandler.cs" />
+    <Compile Include="InMemoryContentStoreWithEviction.cs" />
+    <Compile Include="LruCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
